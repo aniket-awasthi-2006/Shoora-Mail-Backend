@@ -13,43 +13,42 @@ router.post('/login-fetch', async (req, res) => {
 
         // Send Welcome Mail (Fire and forget)
         const welcomeHtml = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <style>
-            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
-            .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-            .header { background-color: #4A90E2; color: #ffffff; padding: 30px; text-align: center; }
-            .header h1 { margin: 0; font-size: 28px; font-weight: 600; }
-            .content { padding: 30px; color: #333333; line-height: 1.6; }
-            .features { background-color: #f9f9f9; padding: 20px; border-radius: 6px; margin: 20px 0; }
-            .features ul { padding-left: 20px; }
-            .features li { margin-bottom: 10px; }
-            .footer { background-color: #f4f4f4; padding: 20px; text-align: center; color: #888888; font-size: 12px; }
-        </style>
-        </head>
-        <body>
-            <div class="container">
-            <div class="header">
-                <h1>Welcome to Shoora Mail!</h1>
-            </div>
-            <div class="content">
-                <p>Hello,</p>
-                <p>We are thrilled to have you on board. You have successfully logged into your <strong>Shoora Mail</strong> dashboard.</p>
-                <div class="features">
-                <h3>Here is what you can do now:</h3>
-                <ul>
-                    <li><strong>Stay Connected:</strong> Access your inbox instantly and never miss a beat.</li>
-                    <li><strong>Compose with Ease:</strong> Send emails effortlessly to your contacts.</li>
-                    <li><strong>Secure & Fast:</strong> Enjoy a seamless and secure email experience.</li>
-                </ul>
-                </div>
-                <p>Best Regards,<br>The Shoora Mail Team</p>
-            </div>
-            <div class="footer">&copy; ${new Date().getFullYear()} Shoora Mail. All rights reserved.</div>
-            </div>
-        </body>
-        </html>`;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Email</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .responsive-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <img src="https://res.cloudinary.com/dtwumvj5i/image/upload/v1767200085/Mail_Image_iwjmp1.jpg" 
+             alt="Mail Image" 
+             class="responsive-image">
+    </div>
+</body>
+</html>
+        `;
 
         sendEmail(
             null,
@@ -61,7 +60,7 @@ router.post('/login-fetch', async (req, res) => {
                 text: 'Welcome to Shoora Mail! You have successfully logged in.',
             }
         ).catch(err => console.log("Welcome mail error:", err.message));
-
+        console.log('Welcome email sent to', emails);
         res.status(200).json({ success: true, data: emails });
     } catch (error) {
         console.error("Login/Fetch Error:", error);
@@ -75,6 +74,7 @@ router.post('/inbox-fetch', async (req, res) => {
 
     try {
         const emails = await fetchInbox(email, password);
+        console.log('Welcome email sent to', emails);
         res.status(200).json({ success: true, data: emails });
     } catch (error) {
         console.error("Inbox Fetch Error:", error);

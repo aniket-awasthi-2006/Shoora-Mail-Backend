@@ -22,13 +22,15 @@ const parseEmail = async (item) => {
     const all = item.parts.find((part) => part.which === '');
     const mail = await simpleParser(all.body);
 
-    const emailSender = mail.from.text.split('@')[0];
-    const senderName = emailSender.split('.').map(name => name.charAt(0).toUpperCase() + name.slice(1)).join(' ');
+    const senderMatch = mail.from.text.match(/"([^"]*)"/);
+    const emailMatch = mail.from.text.match(/<([^>]*)>/);
+    const senderName = senderMatch ? senderMatch[1] : mail.from.text.split('<')[0].trim();
+    const senderEmail = emailMatch ? emailMatch[1] : mail.from.text;
 
     return {
         id: item.attributes.uid,
         sender: senderName,
-        senderEmail: mail.from.text,
+        senderEmail: senderEmail,
         subject: mail.subject,
         preview: mail.textAsHtml ? mail.textAsHtml.slice(0, 100) : '',
         body: mail.html || mail.text,
